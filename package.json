@@ -12,6 +12,20 @@
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
     "jade": "~1.11.0",
-    "morgan": "~1.9.0"
-  }
+    "morgan": "~1.9.0",
+    "mysql": "^2.15.0",
+    "promise-mysql": "^3.3.1"
+  },
+  "description": "",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sopt-Bridge/Bridge-Server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sopt-Bridge/Bridge-Server/issues"
+  },
+  "homepage": "https://github.com/Sopt-Bridge/Bridge-Server#readme"
 }

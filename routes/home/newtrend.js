@@ -5,10 +5,10 @@ const crypto = require('crypto-promise');      // crypto 모듈의 promise 버�
 const db = require('../../module/pool.js');
 
 
-router.get('/newtrend', async (req, res) => {
-
-      let selectQuery = 'SELECT * FROM contents ORDER BY contents_like limit 8';      
-      let selectResult = await db.queryParam_Arr(selectQuery);
+router.get('/', async (req, res) => {
+      let contents_category = req.params.contents_category;
+      let selectQuery = 'SELECT * FROM Contents ORDER BY contents_like limit 8';      
+      let selectResult = await db.queryParam_None(selectQuery);
      
       if (!selectResult) {                                    // 정상적으로 query문이 수행되지 않았을 경우
          res.status(500).send({

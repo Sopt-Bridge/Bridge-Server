@@ -6,10 +6,10 @@ const crypto = require('crypto-promise');      // crypto 모듈의 promise 버�
 const db = require('../../module/pool.js');
 
 
-router.get('/recommended', async (req, res) => {
+router.get('/', async (req, res) => {
 
-      let selectQuery = 'SELECT * FROM content,recommended WHERE contents.contents_idx=recommended.contents_idx ORDER BY rand() limit 4';   
-      let selectResult = await db.queryParam_Arr(selectQuery);
+      let selectQuery = 'SELECT * FROM Contents,Recommend WHERE Contents.contents_idx=Recommend.contents_idx ORDER BY rand() limit 4';   
+      let selectResult = await db.queryParam_None(selectQuery);
 
       if (!selectResult) {                                    // 정상적으로 query문이 수행되지 않았을 경우
          res.status(500).send({

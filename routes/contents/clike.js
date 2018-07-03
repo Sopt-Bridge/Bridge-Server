@@ -21,13 +21,13 @@ router.post('/', async (req, res) => {
             });
          } else {
             if(likenum==0){
-               let mQurey = 'UPDATE contents SET contents_like=1';
+               let mQuery = 'UPDATE contents SET contents_like=1';
                let mResult =  await db.queryParam_Arr(mQuery);
                 res.status(201).send({
                   message : "Successful modify like"
                });
             }else{
-               let mQurey = 'UPDATE contents SET contents_like=0';
+               let mQuery = 'UPDATE contents SET contents_like=0';
                let mResult =  await db.queryParam_Arr(mQuery);
                 res.status(201).send({
                   message : "Successful modify like"
