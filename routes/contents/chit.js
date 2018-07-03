@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
 			message : "Null Value"
 		});
 	} else {
-		let hitQuery = 'UPDATE contents SET contents_hit = contents_hit+1 WHERE contents_idx=?';
+		let hitQuery = 'UPDATE Contents SET contents_hit = contents_hit+1 WHERE contents_idx=?';
 		let hitResult = await db.queryParam_Arr(hitQuery, [contents_idx]);
 
 			if(!hitResult) {
