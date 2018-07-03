@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
          res.status(201).send(
               {
                   message : "ok",
-                  data : [selectResult]
+                  data : [{contents_list : selectResult}]
               }
        );
       

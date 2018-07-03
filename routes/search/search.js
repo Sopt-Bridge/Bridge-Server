@@ -5,9 +5,9 @@ const crypto = require('crypto-promise');      // crypto 모듈의 promise 버�
 const db = require('../../module/pool.js');
 
 
-router.get('/:searchname', async (req, res) => {
-   let searchname = req.params.searchname;
-   let search_params = ['%'+req.params.searchname+'%'];
+router.post('/', async (req, res) => {
+   let searchname = req.body.searchname;
+   let search_params = ['%'+req.body.searchname+'%'];
    if (!searchname) {
       res.status(400).send({
          message : "Null searchname Value"
@@ -32,7 +32,7 @@ router.get('/:searchname', async (req, res) => {
           res.status(201).send(
           {
               message : "ok",
-              data : [searchResult]
+              data : [{contents_list:searchResult}]
           }
        );
       
