@@ -13,12 +13,12 @@ router.get('/', async (req, res) => {
 
       if (!selectResult) {                                    // 정상적으로 query문이 수행되지 않았을 경우
          res.status(500).send({
-         message : "Fail showing recommended video from server"
+         message : "server error"
          });
       } else {     
          res.status(201).send(
               {
-                  message : "success showing recommended video",
+                  message : "ok",
                   data : [selectResult]
               }
        );

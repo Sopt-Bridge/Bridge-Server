@@ -7,7 +7,7 @@ const db = require('../../module/pool.js');
 
 router.get('/:contents_category', async (req, res) => {
       let contents_category = req.params.contents_category;
-      let selectQuery = 'SELECT * FROM Contents ORDER BY contents_like DESC limit 8';      
+      let selectQuery = 'SELECT * FROM Contents ORDER BY contents_hit DESC';      
       let selectResult = await db.queryParam_None(selectQuery);
      
       if (!selectResult) {                                    // 정상적으로 query문이 수행되지 않았을 경우
