@@ -7,19 +7,18 @@ const moment = require('moment');
 router.post('/', async (req, res) => {
 	let currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 	let userIdx = req.body.userIdx;
-	let iboardContent = req.body.iboardContent;
-	let iboardTitle = req.body.iboardTitle; 
-	let iboardUrl = req.body.iboardUrl; 
+	let ircmtContent = req.body.ircmtContent;
+	let icmtIdx = req.body.icmtIdx;	
 
-	if (!userIdx) {
+	if (!userIdx || !icmtIdx) {
 		res.status(400).send({
 			message : "Null Value"
 		});
 	} else {
-		    let requestQuery = 'INSERT INTO Interpretation (userIdx, iboardContent, iboardDate, iboardUrl, iboardTitle) VALUES (?,?,?,?,?)'
-			let requestResult = await db.queryParam_Arr(requestQuery, [userIdx, iboardContent, currentTime, iboardUrl, iboardTitle]);
+		let registerReviewQuery = 'INSERT INTO Irecomment (ircmtDate, ircmtContent, userIdx,icmtIdx) VALUES (?,?,?,?)'
+		let registerReview = await db.queryParam_Arr(registerReviewQuery, [currentTime,ircmtContent, userIdx,icmtIdx]);
 
-			if (!requestResult) {
+			if (!registerReview) {
 				res.status(500).send({
 					message : "Fail at Server"
 				});

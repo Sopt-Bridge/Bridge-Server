@@ -1,28 +1,29 @@
- const express = require('express');
+const express = require('express');
 const router = express.Router();
 const crypto = require('crypto-promise');  
 const db = require('../../module/pool.js');
 const moment = require('moment');
 
-router.post('/', async (req, res) => {
-
-	let iboardIdx = req.body.iboardIdx;
+router.get('/:iboardIdx', async (req, res) => {
+	
+	let iboardIdx = req.params.iboardIdx; 
 
 	if (!iboardIdx) {
 		res.status(400).send({
 			message : "Null Value"
 		});
 	} else {
-		    let deleteQuery = 'DELETE FROM Interpretation WHERE iboardIdx=?'
-			let deleteResult = await db.queryParam_Arr(deleteQuery,[iboardIdx]);
+		    let viewQuery = 'SELECT iboardUrl, iboardContent, iboardDate, iboardTitle, userIdx From Interpretation WHERE iboardIdx=?'
+			let viewResult = await db.queryParam_Arr(viewQuery,[iboardIdx]);
 
-			if (!deleteResult) {
+			if (!viewResult) {
 				res.status(500).send({
 					message : "Fail at Server"
 				});
 			} else {
 				res.status(201).send({
 					message : "ok",
+					data : [{contents_list : viewResult}]
 				});
 			}
 		}

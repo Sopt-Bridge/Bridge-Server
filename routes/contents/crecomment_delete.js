@@ -2,26 +2,27 @@ const express = require('express');
 const router = express.Router();
 const crypto = require('crypto-promise');  
 const db = require('../../module/pool.js');
+const moment = require('moment');
 
 router.post('/', async (req, res) => {
 
-	let contentsIdx = req.body.contentsIdx;
+	let crecmtIdx = req.body.crecmtIdx;
 
-	if(!contentsIdx){
+	if (!crecmtIdx) {
 		res.status(400).send({
 			message : "Null Value"
 		});
 	} else {
-		let hitQuery = 'UPDATE Contents SET contentsHit = contentsHit+1 WHERE contentsIdx=?';
-		let hitResult = await db.queryParam_Arr(hitQuery, [contentsIdx]);
+		    let deleteQuery = 'DELETE FROM Crecomment WHERE crecmtIdx=?'
+			let deleteResult = await db.queryParam_Arr(deleteQuery,[crecmtIdx]);
 
-			if(!hitResult) {
+			if (!deleteResult) {
 				res.status(500).send({
-					message : "Failed at Server"
+					message : "Fail at Server"
 				});
 			} else {
- 				res.status(201).send({
-					message : "ok"
+				res.status(201).send({
+					message : "ok",
 				});
 			}
 		}
