@@ -5,15 +5,15 @@ const db = require('../../module/pool.js');
 
 router.post('/', async (req, res) => {
 
-   let contents_idx = req.body.contents_idx;
+   let contentsIdx = req.body.contentsIdx;
 
-   if(!contents_idx){
+   if(!contentsIdx){
       res.status(400).send({
          message : "Null Value"
       });
    } else {
-      let likenum = 'SELECT contents.like FROM contents WHERE contents_like=?';
-      let likeResult = await db.queryParam_Arr(likenum, [contents_idx]);
+      let likenum = 'SELECT contents.like FROM contents WHERE contentsLike=?';
+      let likeResult = await db.queryParam_Arr(likenum, [contentsIdx]);
 
          if(!likenum) {
             res.status(500).send({
@@ -21,16 +21,16 @@ router.post('/', async (req, res) => {
             });
          } else {
             if(likenum==0){
-               let mQuery = 'UPDATE contents SET contents_like=1';
+               let mQuery = 'UPDATE contents SET contentsLike=1';
                let mResult =  await db.queryParam_Arr(mQuery);
                 res.status(201).send({
-                  message : "Successful modify like"
+                  message : "ok"
                });
             }else{
-               let mQuery = 'UPDATE contents SET contents_like=0';
+               let mQuery = 'UPDATE contents SET contentsLike=0';
                let mResult =  await db.queryParam_Arr(mQuery);
                 res.status(201).send({
-                  message : "Successful modify like"
+                  message : "ok"
                });
             }
             

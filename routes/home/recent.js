@@ -5,19 +5,19 @@ const crypto = require('crypto-promise');      // crypto 모듈의 promise 버�
 const db = require('../../module/pool.js');
 
 
-router.get('/:contents_category/:lastcontents_idx' , async (req, res) =>{
-    let contents_category = req.params.contents_category;
-    let lastcontents_idx = req.params.lastcontents_idx;
+router.get('/:contentsCategory/:lastcontentsIdx' , async (req, res) =>{
+    let contentsCategory = req.params.contentsCategory;
+    let lastcontentsIdx = req.params.lastcontentsIdx;
    
     let maxindex = Number.MAX_VALUE;
 
-    if(lastcontents_idx == 0){
-        lastcontents_idx = maxindex+1;
+    if(lastcontentsIdx == 0){
+        lastcontentsIdx = maxindex+1;
     }
 
-    let getQuery = 'SELECT * FROM Contents WHERE contents_category=? and contents_idx < ? ORDER BY contents_recent DESC limit 12'
+    let getQuery = 'SELECT contentsTitle, contentsInfo, contentsHit, contentsDate, contentsLike, contentsType, contentsRuntime FROM Contents WHERE contentsCategory=? and contentsIdx < ? ORDER BY contentsRecent DESC limit 12'
     
-    let getResult = await db.queryParam_Arr(getQuery,[contents_category, lastcontents_idx]);
+    let getResult = await db.queryParam_Arr(getQuery,[contentsCategory, lastcontentsIdx]);
     
     if(!getResult){
         

@@ -8,7 +8,7 @@ const db = require('../../module/pool.js');
 
 router.get('/', async (req, res) => {
 
-      let selectQuery = 'SELECT * FROM Contents,Recommend WHERE Contents.contents_idx=Recommend.contents_idx ORDER BY rand() limit 4';   
+      let selectQuery = 'SELECT contentsTitle, contentsInfo, contentsHit, contentsDate, contentsLike, contentsType, contentsRuntime FROM Contents,Recommend WHERE Contents.contentsIdx=Recommend.contentsIdx ORDER BY rand() limit 4';   
       let selectResult = await db.queryParam_None(selectQuery);
 
       if (!selectResult) {                                    // 정상적으로 query문이 수행되지 않았을 경우

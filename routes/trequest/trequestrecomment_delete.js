@@ -1,20 +1,20 @@
- const express = require('express');
+const express = require('express');
 const router = express.Router();
 const crypto = require('crypto-promise');  
 const db = require('../../module/pool.js');
 const moment = require('moment');
 
-router.post('/', async (req, res) => {
+router.get('/:ircmtIdx', async (req, res) => {
 
-	let iboardIdx = req.body.iboardIdx;
+	let ircmtIdx = req.params.ircmtIdx;
 
-	if (!iboardIdx) {
+	if (!ircmtIdx) {
 		res.status(400).send({
 			message : "Null Value"
 		});
 	} else {
-		    let deleteQuery = 'DELETE FROM Interpretation WHERE iboardIdx=?'
-			let deleteResult = await db.queryParam_Arr(deleteQuery,[iboardIdx]);
+		    let deleteQuery = 'DELETE FROM Irecomment WHERE ircmtIdx=?'
+			let deleteResult = await db.queryParam_Arr(deleteQuery,[ircmtIdx]);
 
 			if (!deleteResult) {
 				res.status(500).send({

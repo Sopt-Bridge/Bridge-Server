@@ -3,17 +3,17 @@ const router = express.Router();
 const crypto = require('crypto-promise');  
 const db = require('../../module/pool.js');
 
-router.get('/:ccmtIdx', async (req, res) => {
+router.get('/:icmtIdx', async (req, res) => {
 
 	
-    let ccmtIdx = req.params.ccmtIdx;
+    let icmtIdx = req.params.icmtIdx;
     // 대댓글 수 , 유저, 작성시간, 내용
 	
-	let recommentNum = 'SELECT count(crecmtIdx) FROM Crecomment WHERE ccmtIdx =?'
-	let renumResult = await db.queryParam_Arr(recommentNum, [ccmtIdx]);
+	let recommentNum = 'SELECT count(IrcmtIdx) FROM Irecomment WHERE icmtIdx =?'
+	let renumResult = await db.queryParam_Arr(recommentNum, [icmtIdx]);
 
-	let getReviewListQuery = 'SELECT crecmtDate, crecmtContent, userIdx FROM Crecomment WHERE ccmtIdx=?';
-	let getReviewList = await db.queryParam_Arr(getReviewListQuery, [ccmtIdx]);
+	let getReviewListQuery = 'SELECT ircmtDate, ircmtContent, userIdx FROM Irecomment WHERE icmtIdx=?';
+	let getReviewList = await db.queryParam_Arr(getReviewListQuery, [ icmtIdx]);
 
 	if (!getReviewList) {
 		res.status(500).send({

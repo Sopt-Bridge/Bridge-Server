@@ -5,26 +5,26 @@ const db = require('../../module/pool.js');
 const moment = require('moment');
 
 router.post('/', async (req, res) => {
-	let current_time = moment().format('YYYY-MM-DD HH:mm:ss');
-	let user_idx = req.body.user_idx;
-	let Ccmt_content = req.body.Ccmt_content;
-	let contents_idx = req.body.contents_idx;
+	let currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
+	let userIdx = req.body.userIdx;
+	let ccmtContent = req.body.CcmtContent;
+	let contentsIdx = req.body.contentsIdx;
 
-	if (!user_idx || !contents_idx) {
+	if (!userIdx || !contentsIdx) {
 		res.status(400).send({
 			message : "Null Value"
 		});
 	} else {
-		    let registerReviewQuery = 'INSERT INTO Ccomment (Ccmt_date, Ccmt_content, ) VALUES ()'
-			let registerReview = await db.queryParam_Arr(registerReviewQuery, [r_idx, r_content, r_photo, u_idx, s_idx]);
+		    let registerReviewQuery = 'INSERT INTO Ccomment (ccmtDate, ccmtContent, userIdx,contentsIdx) VALUES (?,?,?,?)'
+			let registerReview = await db.queryParam_Arr(registerReviewQuery, [currentTime,ccmtContent, userIdx, contentsIdx]);
 
 			if (!registerReview) {
 				res.status(500).send({
-					message : "Failed To Register review at Server"
+					message : "Fail at Server"
 				});
 			} else {
 				res.status(201).send({
-					message : "Successful Register Review Data"
+					message : "ok"
 				});
 			}
 		}
