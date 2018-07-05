@@ -1,8 +1,12 @@
 var createError = require('http-errors');
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const passport = require('passport');
+var GoogleStrategy = require( 'passport-google-oauth20' ).GoogleStrategy;
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -19,8 +23,26 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+	secret: '14brdg29hs2s7my2g6'
+	resave: false,
+	saveUninitialized: true;
+}))
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+passport.use(new GoogleStrategy({
+	clientID: 'GOOGLE_CLIENT_ID',
+	clientSecret: 'GOOGLE_CLIENT_SECRET',
+	callbackURL: 'http://alwaysawake.ml/auth/google/callback'
+}, function(accessToken, refreshToken, profile, done) {
+	process.nextTick(function() {
+		user = profile;
+		return done(null, user);
+		});
+	}
+));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
