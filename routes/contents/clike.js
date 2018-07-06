@@ -6,31 +6,31 @@ const db = require('../../module/pool.js');
 router.post('/', async (req, res) => {
 
    let contentsIdx = req.body.contentsIdx;
-
-   if(!contentsIdx){
+   let userIdx = req.body.userIdx;
+   if(!contentsIdx||!userIdx){
       res.status(400).send({
          message : "Null Value"
       });
    } else {
-      let likenum = 'SELECT contents.like FROM contents WHERE contentsLike=?';
-      let likeResult = await db.queryParam_Arr(likenum, [contentsIdx]);
+      let likenum = 'SELECT contentsLike FROM Contents WHERE contentsIdx=? and userIdx=?';
+      let likeResult = await db.queryParam_Arr(likenum, [contentsIdx, userIdx]);
 
-         if(!likenum) {
+         if(!likeResult) {
             res.status(500).send({
                message : "Failed at Server"
             });
          } else {
-            if(likenum==0){
-               let mQuery = 'UPDATE contents SET contentsLike=1';
-               let mResult =  await db.queryParam_Arr(mQuery);
+            if(likeResult[0].contentsLike===0){
+               let mQuery = 'UPDATE Contents SET contentsLike=1 WHERE contentsIdx=? and userIdx=?';
+               let mResult =  await db.queryParam_Arr(mQuery,[contentsIdx, userIdx]);
                 res.status(201).send({
-                  message : "ok"
+                  message : "ok!"
                });
             }else{
-               let mQuery = 'UPDATE contents SET contentsLike=0';
-               let mResult =  await db.queryParam_Arr(mQuery);
+               let mQuery = 'UPDATE Contents SET contentsLike=0 WHERE contentsIdx=? and userIdx=?';
+               let mResult =  await db.queryParam_Arr(mQuery,[contentsIdx,userIdx]);
                 res.status(201).send({
-                  message : "ok"
+                  message : "ok" 
                });
             }
             

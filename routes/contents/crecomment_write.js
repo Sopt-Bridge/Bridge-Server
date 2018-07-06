@@ -3,7 +3,7 @@ const router = express.Router();
 const crypto = require('crypto-promise');  
 const db = require('../../module/pool.js');
 const moment = require('moment');
-
+//50개
 router.post('/', async (req, res) => {
 	let currentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 	let userIdx = req.body.userIdx;
