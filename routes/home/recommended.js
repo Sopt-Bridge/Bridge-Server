@@ -1,8 +1,5 @@
 const express = require('express');
-const router = express.Router();
-
-
-const crypto = require('crypto-promise');      // crypto 모듈의 promise 버전
+const router = express.Router();    // crypto 모듈의 promise 버전
 const db = require('../../module/pool.js');
 
 
