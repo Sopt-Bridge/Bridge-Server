@@ -14,38 +14,38 @@ router.post('/', async (req, res) => {
 			message : "Null Value"
 		});
 	} else {
-			if(title.length==0&&content.length!=0){// 제목 안바꿀때
-				let updateQuery = 'UPDATE Interpretation SET iboardContent = ? WHERE iboardIdx=?';
-				let updateResult = await db.queryParam_Arr(updateQuery, [content, iboardIdx]);
+		//	if(title.length==0&&content.length!=0){// 제목 안바꿀때
+		//		let updateQuery = 'UPDATE Interpretation SET iboardContent = ? WHERE iboardIdx=?';
+		//		let updateResult = await db.queryParam_Arr(updateQuery, [content, iboardIdx]);
 
-				let updateQuery1 = 'UPDATE Interpretation SET iboardDate = ? WHERE iboardIdx=?';
-				let updateResult1 = await db.queryParam_Arr(updateQuery1, [currentTime, iboardIdx]);
+		//		let updateQuery1 = 'UPDATE Interpretation SET iboardDate = ? WHERE iboardIdx=?';
+		//		let updateResult1 = await db.queryParam_Arr(updateQuery1, [currentTime, iboardIdx]);
 				
-				if(!updateResult||!updateResult1){
-					res.status(500).send({
-						message : "Fail at Server!"
-					});
-				}else{
-					res.status(201).send({
-						message : "ok"
-					});
-				}
-			}else if(content.length==0&&title.length!=0){// 내용 안바꿀떄
-				let updateQuery = 'UPDATE Interpretation SET iboardTitle = ? WHERE iboardIdx=?';
-				let updateResult = await db.queryParam_Arr(updateQuery, [title, iboardIdx]);
-
-				let updateQuery1 = 'UPDATE Interpretation SET iboardDate = ? WHERE iboardIdx=?';
-				let updateResult1 = await db.queryParam_Arr(updateQuery1, [currentTime, iboardIdx]);
-				if(!updateResult||!updateResult1){
-					res.status(500).send({
-						message : "Fail at Server!!"
-					});
-				}else{
-					res.status(201).send({
-						message : "ok"
-					});
-				}
-			}else{// 둘다 바꿀때 
+		//		if(!updateResult||!updateResult1){
+		//			res.status(500).send({
+		//				message : "Fail at Server!"
+		//			});
+		//		}else{
+		//			res.status(201).send({
+		//				message : "ok"
+		//			});
+		//		}
+		//	}else if(content.length==0&&title.length!=0){// 내용 안바꿀떄
+		//		let updateQuery = 'UPDATE Interpretation SET iboardTitle = ? WHERE iboardIdx=?';
+		//		let updateResult = await db.queryParam_Arr(updateQuery, [title, iboardIdx]);
+//
+//				let updateQuery1 = 'UPDATE Interpretation SET iboardDate = ? WHERE iboardIdx=?';
+//				let updateResult1 = await db.quesryParam_Arr(updateQuery1, [currentTime, iboardIdx]);
+//				if(!updateResult||!updateResult1){
+//					res.status(500).send({
+//						message : "Fail at Server!!"
+//					});
+//				}else{
+//					res.status(201).send({
+//						message : "ok"
+//					});
+//				}
+//		}else{// 둘다 바꿀때 
 				let updateQuery = 'UPDATE Interpretation SET iboardContent = ? WHERE iboardIdx=?';
 				let updateResult = await db.queryParam_Arr(updateQuery, [content, iboardIdx]);
 
@@ -65,7 +65,7 @@ router.post('/', async (req, res) => {
 						message : "ok"
 					});
 				}
-			}
+//			}
 		   }
 	
 });
