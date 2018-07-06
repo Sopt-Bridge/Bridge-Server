@@ -1,31 +1,77 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment');
+const async = require('async');
 
-const db = const db = require('../../module/pool.js');
+const db = require('../../module/pool.js');
 
-const passport = require('passport');
-var GoogleStrategy = require( 'passport-google-oauth20' ).GoogleStrategy;
+router.post('/', async(req, res) => {
+	let userUuid = req.body.userUuid;
+	let signupTime = moment().format('YYYY-MM-DD HH:mm:ss');
+	let recentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
 
-passport.serializeUser(function(user, done) {
-	done(null, user.username);
-});
+	if(!userUuid){
+		res.status(400).send({
+			message : "Null Value"
+		});
+	} else {
 
-passport.deserializeUser(function(id, done) {
-	for(var i=0;i<user.length;j++){
-		var user = users[i];
-		if(user.username==id){
-			return done(null, done);
-		} //여러번 로그인 하면 두번째부터는 이것만 계속 리턴
+		let checkQuery = 'SELECT * FROM User WHERE userUuid = ?';
+		let checkResult = await db.queryParam_Arr(checkQuery,[userUuid]);
+
+		if(checkResult.length === 0){//첫 로그인
+			let InsertUserQuery = 'INSERT INTO User (userUuid, recentTime, signupTime) Values (?, ?, ?)';
+			let InsertUserResult = await db.queryParam_Arr(InsertUserQuery, [userUuid,recentTime,signupTime]);
+			
+			if(!InsertUserResult){
+				res.status(500).send({
+					message : "Failed Insert From Server"
+				});
+			} else {
+				let SelectUserIdxQuery = 'SELECT userIdx from User where userUuid = ?'
+				let SelectUserIdxResult = await db.queryParam_Arr(SelectUserIdxQuery, [userUuid]);
+
+				if(!SelectUserIdxResult){
+					res.status(500).send({
+						message : "Failed Select userIdx From Server"
+					});
+				} else {
+					let createLibQuery = 'INSERT INTO Library (userIdx) Values (?)'
+					let createLibResult = await db.queryParam_Arr(createLibQuery, [SelectUserIdxResult[0].userIdx]);
+
+					if(!createLibResult){
+						res.status(500).send({
+							message : "Failed register LibIdx from Server"
+						})
+					} else {
+						res.status(201).send({
+							message : "success"
+						});
+					}
+				}
+			}
+		}else if(checkResult.length ===1){// 이후 로그인
+			let UpdateUserQuery = 'UPDATE User SET recentTime=? WHERE userUuid=?';
+			let UpdateUserResult = await db.queryParam_Arr(UpdateUserQuery, [recentTime,userUuid]);
+			
+			if(!UpdateUserResult){
+				res.status(500).send({
+					message : "Failed Upated From Server"
+				});
+			} else {
+				res.status(201).send({
+					message : "Updated"
+					date : [{contents_list : SelectUserIdxResult[0].userIdx}]
+			});
+			}
+		}else{
+			res.status(500).send({
+				message:"server error"
+			});
+		}
 	}
+	
 });
 
-
-router.get('/', function(req, res){ 
-	if(req.session.authId)
-		res.send(authId+'님 로그인되었습니다.');
-	else
-		res.send('로그인하세요!');
-});
-
-app.post(')
+module.exports = router;
