@@ -6,6 +6,12 @@ const db = require('../../module/pool.js');
 
 
 router.post('/', async (req, res) => {
+   let lastcontentsIdx = req.body.lastcontentsIdx;
+   let maxindex = Number.MAX_VALUE;
+
+   if(lastcontentsIdx == 0){
+        lastcontentsIdx = maxindex+1;
+    }
    let searchname = req.body.searchname;
    let searchType = req.body.searchType;
    let searchParams = ['%'+req.body.searchname+'%'];
@@ -16,11 +22,14 @@ router.post('/', async (req, res) => {
    } else {
       let searchResult;
       if(searchType==0){// 해시 검색 
-          let hashQuery = 'SELECT * FROM Contents,Hashtag WHERE ((Contents.hashIdx1=Hashtag.hashIdx) or (Contents.hashIdx2=Hashtag.hashIdx) or (Contents.hashIdx3=Hashtag.hashIdx) )and Hashtag.hashName = ?';      // 입력받은 s_idx DB에 존재하는지 확인
-          searchResult = await db.queryParam_Arr(hashQuery, [searchname]);
+          let hashQuery = `SELECT Contents.contentsType, Contents.contentsIdx, Contents.contentsUrl, Contents.contentsTitle, Contents.contentsInfo, Contents.contentsDate, Contents.contentsCategory, 
+          Contents.contentsLike, Contents.contentsHit, Contents.contentsRuntime, Contents.hashName1, Contents.hashName2, Contents.hashName3 
+          FROM Contents,Hashtag WHERE ((Contents.hashName1=Hashtag.hashName) or (Contents.hashName2=Hashtag.hashName) or (Contents.hashName3=Hashtag.hashName) )and
+           Hashtag.hashName = ? and contentsIdx < ? limit 12`     // 입력받은 s_idx DB에 존재하는지 확인
+          searchResult = await db.queryParam_Arr(hashQuery, [searchname, lastcontentsIdx]);
       }else{
-          let searchQuery = "SELECT * FROM Contents WHERE contentsTitle LIKE ? ";      // 입력받은 s_idx DB에 존재하는지 확인
-          searchResult = await db.queryParam_Arr(searchQuery,[searchParams]);
+          let searchQuery = "SELECT * FROM Contents WHERE contentsTitle LIKE ? and contentsIdx < ? limit 12";      // 입력받은 s_idx DB에 존재하는지 확인
+          searchResult = await db.queryParam_Arr(searchQuery,[searchParams, lastcontentsIdx]);
       }
       
       if (!searchResult) {                                    // 정상적으로 query문이 수행되지 않았을 경우

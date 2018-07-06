@@ -5,16 +5,19 @@ const crypto = require('crypto-promise');      // crypto 모듈의 promise 버�
 const db = require('../../module/pool.js');
 
 
-router.get('/:contentsCategory/:lastcontentIdx', async (req, res) => {
-      let contentsCategory = req.params.contentsCategory;
+router.get('/:contentsCategory/:lastcontentsIdx', async (req, res) => {
+      let contentsCategory = req.params.contents_category;
       let lastcontentsIdx = req.params.lastcontentsIdx;
+   
       let maxindex = Number.MAX_VALUE;
-      if(lastcontentsIdx == 0){
+
+     if(lastcontentsIdx == 0){
         lastcontentsIdx = maxindex+1;
-       }
-      let selectQuery = 'SELECT contentsTitle, contentsInfo, contentsHit, contentsDate, contentsLike, contentsType, contentsRuntime, hashName1, hashName2, hashName3 ROM Contents WHERE contentsCategory=? and contentsIdx<? ORDER BY contentsHit DESC limit 12';      
-      let selectResult = await db.queryParam_Arr(selectQuery,[lastcontentsIdx, contentsCategory]);
-     
+     }
+
+      let selectQuery = `SELECT contentsTitle, contentsInfo, contentsHit, contentsDate, contentsLike, contentsType, contentsRuntime, hashName1, hashName2, hashName3 
+                         FROM Contents WHERE contentsCategory=? and contentsIdx < ? ORDER BY contentsLike DESC limit 12`;      
+      let selectResult = await db.queryParam_Arr(selectQuery, [lastcontentIdx, contentsCategory]);
 
       if (!selectResult) {                                    // 정상적으로 query문이 수행되지 않았을 경우
          res.status(500).send({
@@ -24,7 +27,7 @@ router.get('/:contentsCategory/:lastcontentIdx', async (req, res) => {
          res.status(201).send(
               {
                   message : "ok",
-                  data : [{contents_list:selectResult}]
+                  data : [{contents_list : selectResult}]
               }
        );
       
@@ -33,3 +36,5 @@ router.get('/:contentsCategory/:lastcontentIdx', async (req, res) => {
 });
 
 module.exports = router;
+select a, b, (select * from fj where fdjdi), d, e, f 
+

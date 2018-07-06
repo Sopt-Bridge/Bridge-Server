@@ -15,7 +15,7 @@ router.get('/:contentsCategory/:lastcontentsIdx' , async (req, res) =>{
         lastcontentsIdx = maxindex+1;
     }
 
-    let getQuery = 'SELECT contentsTitle, contentsInfo, contentsHit, contentsDate, contentsLike, contentsType, contentsRuntime FROM Contents WHERE contentsCategory=? and contentsIdx < ? ORDER BY contentsRecent DESC limit 12'
+    let getQuery = 'SELECT contentsTitle, contentsInfo, contentsHit, contentsDate, contentsLike, contentsType, contentsRuntime, hashName1, hashName2, hashName3 FROM Contents WHERE contentsCategory=? and contentsIdx < ? ORDER BY contentsRecent DESC limit 12'
     
     let getResult = await db.queryParam_Arr(getQuery,[contentsCategory, lastcontentsIdx]);
     

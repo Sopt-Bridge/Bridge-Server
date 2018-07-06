@@ -4,12 +4,16 @@ const crypto = require('crypto-promise');
 const db = require('../../module/pool.js');
 const moment = require('moment');
 
-router.get('/', async (req, res) => {
-	
+router.get('/:lastcontentsIdx', async (req, res) => {
+		 let lastcontentsIdx = req.params.lastcontentsIdx;
+   
+         let maxindex = Number.MAX_VALUE;
 
-	
-		    let viewQuery = 'SELECT iboardTitle, iboardDate, userIdx From Interpretation'
-			let viewResult = await db.queryParam_Arr(viewQuery);
+         if(lastcontentsIdx == 0){
+             lastcontentsIdx = maxindex+1;
+         }
+		    let viewQuery = 'SELECT iboardTitle, iboardDate, userIdx From Interpretation WHERE iboardIdx < ? limit 20'
+			let viewResult = await db.queryParam_Arr(viewQuery, [lastcontentsIdx]);
 
 			if (!viewResult) {
 				res.status(500).send({

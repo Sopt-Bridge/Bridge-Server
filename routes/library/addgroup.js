@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
 	let groupBgimage = req.body.groupBgimage;
 	let groupColor = req.body.groupColor;
 
-	let selectLibQuery = 'SELECT libIdx From Library WHERE userIdx = ?'
+	let selectLibQuery = 'SELECT userIdx From User WHERE userIdx = ?'
 	let selectLibResult = await db.queryParam_Arr(selectLibQuery, [userIdx]);
 
 	if(!selectLibResult) {
@@ -17,12 +17,12 @@ router.post('/', async (req, res) => {
 			massage : "null Value"
 		});
 	} else {
-		let insertGroupQuery = `INSERT INTO Bridge.group (libIdx, groupTitle, groupBgimage, groupColor) VALUES (?, ?, ?, ?)`
-		let insertGroupResult = await db.queryParam_Arr(insertGroupQuery, [selectLibResult[0].libIdx, groupTitle, groupBgimage, groupColor]);
+		let insertGroupQuery = `INSERT INTO Bridge.group (userIdx, groupTitle, groupBgimage, groupColor) VALUES (?, ?, ?, ?)`
+		let insertGroupResult = await db.queryParam_Arr(insertGroupQuery, [selectLibResult[0].userIdx, groupTitle, groupBgimage, groupColor]);
 
 		if(!insertGroupResult){
 			res.status(500).send({
-				message : "Failed Insert Lib From Server"
+				message : "Failed Insert group From Server"
 			});
 		} else {
 			res.status(201).send({
