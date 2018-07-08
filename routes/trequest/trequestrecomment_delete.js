@@ -4,9 +4,9 @@ const crypto = require('crypto-promise');
 const db = require('../../module/pool.js');
 const moment = require('moment');
 
-router.get('/:ircmtIdx', async (req, res) => {
+router.post('/', async (req, res) => {
 
-	let ircmtIdx = req.params.ircmtIdx;
+	let ircmtIdx = req.body.ircmtIdx;
 
 	if (!ircmtIdx) {
 		res.status(400).send({
@@ -18,7 +18,7 @@ router.get('/:ircmtIdx', async (req, res) => {
 
 			if (!deleteResult) {
 				res.status(500).send({
-					message : "Fail at Server"
+					message : "Server error"
 				});
 			} else {
 				res.status(201).send({

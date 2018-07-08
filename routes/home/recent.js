@@ -10,12 +10,16 @@ router.get('/:contentsCategory/:lastcontentsIdx' , async (req, res) =>{
     let lastcontentsIdx = req.params.lastcontentsIdx;
    
     let maxindex = Number.MAX_VALUE;
-
+    if(!contentsCategory || !lastcontentsIdx){
+        res.status(400).send({
+            message : "null Value"
+        });
+    } else {
     if(lastcontentsIdx == 0){
         lastcontentsIdx = maxindex+1;
     }
 
-    let getQuery = 'SELECT contentsTitle, contentsInfo, contentsHit, contentsDate, contentsLike, contentsType, contentsRuntime, hashName1, hashName2, hashName3 FROM Contents WHERE contentsCategory=? and contentsIdx < ? ORDER BY contentsRecent DESC limit 12'
+    let getQuery = 'SELECT contentsTitle, contentsInfo, contentsHit, contentsDate, contentsLike, contentsType, contentsRuntime, hashName1, hashName2, hashName3 FROM Contents WHERE contentsCategory=? and contentsIdx < ? ORDER BY contentsDate DESC limit 12'
     
     let getResult = await db.queryParam_Arr(getQuery,[contentsCategory, lastcontentsIdx]);
     
@@ -29,7 +33,7 @@ router.get('/:contentsCategory/:lastcontentsIdx' , async (req, res) =>{
             message : "ok",
             data : [{contents_list:getResult}]
         });
-        
+        }
     }
 });
 

@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
 
          if(!likeResult) {
             res.status(500).send({
-               message : "Failed at Server"
+               message : "Server error"
             });
          } else {
             if(likeResult[0].contentsLike===0){

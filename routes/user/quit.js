@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
 
 		if(!selectIdxResult){
 			res.status(500),send({
-				message : "Server Select error"
+				message : "Server error"
 			});
 		} else {
 			let deleteUserQuery = `DELETE FROM User WHERE userIdx = ?`
@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
 
 			if(!deleteUserResult) {
 				res.status(500).send({
-					message : "Server Delete error"
+					message : "Server error"
 				});
 			} else {
 				res.status(201).send({

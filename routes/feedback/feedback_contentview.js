@@ -12,7 +12,7 @@ router.get('/:fboardIdx', async (req, res) => {
 
 	if (!getfeedbackResult) {
 		res.status(500).send({
-			message : "Failed"
+			message : "Server error"
 		});
 	} else {
 		res.status(201).send({

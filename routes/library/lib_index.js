@@ -1,15 +1,12 @@
 var express = require('express');
 var router = express.Router();
 
-<<<<<<< HEAD
 router.use('/addgroup',require('./addgroup.js'));
-router.use('/getgroupcontent',require('./getgroupcontent.js'));
+router.use('/getgroupcontents',require('./getgroupcontents.js'));
 router.use('/groupdelete',require('./groupdelete.js'));
-router.use('/contentdelete',require('./contentdelete.js'));
-=======
-
-router.use('/addgroup',require('./addgroup.js'));
+router.use('/contentsdelete',require('./contentsdelete.js'));
 router.use('/grouplist', require('./grouplist.js'));
 router.use('/groupmodify', require('./groupmodify.js'));
->>>>>>> 34949ba442eae1f4a6e30a218a98f214fcde5141
+router.use('/recentvideo', require('./recentvideo.js'));
+router.use('/addgroupcontents', require('./addgroupcontents.js'));
 module.exports = router;

@@ -16,12 +16,12 @@ router.get('/:iboardIdx/:lastcontentsIdx', async (req, res) => {
 	let recommentNum = 'SELECT count(ircmtIdx) FROM Irecomment WHERE icmtIdx IN (SELECT icmtIdx FROM Icomment WHERE iboardIdx=?)'
 	let renumResult = await db.queryParam_Arr(recommentNum, [iboardIdx]);
 
-	let getReviewListQuery = 'SELECT icmtDate, icmtContent, userIdx FROM Icomment WHERE iboardIdx=? and icmtIdx < ? limit 50';
+	let getReviewListQuery = 'SELECT icmtDate, icmtContent, userIdx FROM Icomment WHERE iboardIdx=? and icmtIdx < ? ORDER BY icmtDate DESC limit 50';
 	let getReviewList = await db.queryParam_Arr(getReviewListQuery, [iboardIdx, lastcontentsIdx]);
 
 	if (!getReviewList||!renumResult) {
 		res.status(500).send({
-			message : "Failed"
+			message : "Server error"
 		});
 	} else {
 		res.status(201).send({

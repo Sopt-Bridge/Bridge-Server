@@ -9,6 +9,12 @@ router.get('/:lastcontentsIdx/:userIdx', async (req, res) => {
    		let userIdx = req.params.userIdx;
          let maxindex = Number.MAX_VALUE;
 
+         if(!lastcontentsIdx || !userIdx){
+         	res.status(400).send({
+         		message : "null Value"
+         	});
+         } else {
+
          if(lastcontentsIdx == 0){
              lastcontentsIdx = maxindex+1;
          }
@@ -17,7 +23,7 @@ router.get('/:lastcontentsIdx/:userIdx', async (req, res) => {
 
 			if (!viewResult) {
 				res.status(500).send({
-					message : "Fail at Server"
+					message : "Server error"
 				});
 			} else {
 				res.status(201).send({
@@ -25,6 +31,7 @@ router.get('/:lastcontentsIdx/:userIdx', async (req, res) => {
 					data : [{contents_list : viewResult}]
 				});
 			}
+		}
 		
 });
 

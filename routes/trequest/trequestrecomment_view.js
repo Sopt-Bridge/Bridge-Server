@@ -19,11 +19,11 @@ router.get('/:icmtIdx/:lastcontentsIdx', async (req, res) => {
 	let renumResult = await db.queryParam_Arr(recommentNum, [icmtIdx]);
 
 	let getReviewListQuery = 'SELECT ircmtDate, ircmtContent, userIdx FROM Irecomment WHERE icmtIdx=? and ircmtIdx < ? limit 50' ;
-	let getReviewList = await db.queryParam_Arr(getReviewListQuery, [ icmtIdx], lastcontentsIdx);
+	let getReviewList = await db.queryParam_Arr(getReviewListQuery, [ icmtIdx, lastcontentsIdx]);
 
 	if (!getReviewList) {
 		res.status(500).send({
-			message : "Failed"
+			message : "Server error"
 		});
 	} else {
 		res.status(201).send({

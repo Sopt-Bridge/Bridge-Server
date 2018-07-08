@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
 
 			if(!hitResult) {
 				res.status(500).send({
-					message : "Failed at Server"
+					message : "Server "
 				});
 			} else {
  				res.status(201).send({

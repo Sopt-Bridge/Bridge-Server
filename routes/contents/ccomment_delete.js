@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const crypto = require('crypto-promise');  
+
 const db = require('../../module/pool.js');
 const moment = require('moment');
 
@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
 
 		if (!deleteResult) {
 			res.status(500).send({
-			message : "Fail at Server"
+			message : "Server error"
 			});
 		} else {
 			res.status(201).send({

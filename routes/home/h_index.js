@@ -7,5 +7,5 @@ router.use('/recent',require('./recent.js'));
 router.use('/nowtrend',require('./nowtrend.js'));
 router.use('/recommended',require('./recommended.js'));
 router.use('/hitsort',require('./hitsort.js'));
-
+router.use('/likesort', require('./likesort.js'));
 module.exports = router;

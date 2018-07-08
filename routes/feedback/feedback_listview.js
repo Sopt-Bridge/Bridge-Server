@@ -9,12 +9,12 @@ router.get('/:lastcontentsIdx', async (req, res) => {
     if(lastcontentsIdx == 0){
         lastcontentsIdx = maxindex+1;
     }
-	let getfeedbackQuery = 'SELECT Feedback.userIdx, Feedback.fboardContent, Feedback.fboardDate , Contents.contentsTitle FROM Feedback, Contents WHERE Feedback.contentsIdx=Contents.contentsIdx and Feedback.contentsIdx<? limit 20';
+	let getfeedbackQuery = 'SELECT Feedback.userIdx, Feedback.fboardContent, Feedback.fboardDate , Contents.contentsTitle FROM Feedback, Contents WHERE Feedback.contentsIdx=Contents.contentsIdx and Feedback.contentsIdx<? ORDER BY Feedback.fboardDate limit 20';
 	let getfeedbackResult = await db.queryParam_Arr(getfeedbackQuery,[lastcontentsIdx]);
 
 	if (!getfeedbackResult) {
 		res.status(500).send({
-			message : "Failed"
+			message : "Server error"
 		});
 	} else {
 		res.status(201).send({

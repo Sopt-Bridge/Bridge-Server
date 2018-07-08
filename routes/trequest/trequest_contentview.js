@@ -17,7 +17,7 @@ router.get('/:iboardIdx', async (req, res) => {
 
 			if (!viewResult) {
 				res.status(500).send({
-					message : "Fail at Server"
+					message : "Server error"
 				});
 			} else {
 				res.status(201).send({

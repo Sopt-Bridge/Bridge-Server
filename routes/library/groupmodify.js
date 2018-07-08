@@ -30,16 +30,16 @@ router.post('/', async (req, res) => {
 
 			if(!groupTitle || !groupColor){
 				res.status(400).send({
-					message : "Null Value title or Color"
+					message : "null Value"
 				});
 			} else {
 			if(!updateResult){
 				res.status(500).send({
-					message : "Server error while update"
+					message : "Server error"
 				});
 			} else {
 				res.status(201).send({
-					message : "success"
+					message : "ok"
 				});
 			}
 		}

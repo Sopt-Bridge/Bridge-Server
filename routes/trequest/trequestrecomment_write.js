@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
 
 			if (!registerReview) {
 				res.status(500).send({
-					message : "Fail at Server"
+					message : "Server error"
 				});
 			} else {
 				res.status(201).send({
