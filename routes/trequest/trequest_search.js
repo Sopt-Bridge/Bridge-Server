@@ -26,7 +26,7 @@ router.get('/:searchname', async (req, res) => {
           res.status(201).send(
           {
               message : "ok",
-              data : [{contents_list:searchResult}]
+              data : [{request_list:searchResult}]
           }
        );
       

@@ -7,7 +7,6 @@ const db = require('../../module/pool.js');
 router.get('/:contentsCategory/:pageIdx', async (req, res) => {
       let contentsCategory = req.params.contentsCategory;
       let pageIdx = req.params.pageIdx;
-      let contentsType = req.params.contentsType;
 
       if(!contentsCategory || !pageIdx){
         res.status(400).send({

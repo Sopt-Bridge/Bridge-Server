@@ -26,7 +26,7 @@ router.get('/:lastcontentsIdx', async (req, res) => {
          } else {
             res.status(201).send({
                message : "ok",
-               data : [{contents_list : viewResult}]
+               data : [{request_list : viewResult}]
             });
          }
       

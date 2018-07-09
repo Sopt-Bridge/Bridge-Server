@@ -31,7 +31,7 @@ router.get('/:lastcontentsIdx/:userIdx/:groupIdx', async (req, res) => {
          } else {
             res.status(201).send({
                message : "ok",
-               data : [{group_title : viewResult}, {group_contentslist:contentResult}]
+               data : [{group_title : viewResult}, {contents_list:contentResult}]
             });
          }
       }

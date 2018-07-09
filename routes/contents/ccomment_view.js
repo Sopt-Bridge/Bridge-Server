@@ -29,11 +29,11 @@ router.post('/', async (req, res) => {
                
                if(!mResult||!lResult){
                   res.status(500).send({
-                     message:"server error!!"
+                     message:"server error"
                   });
                }else{
                   res.status(201).send({
-                     message : "ok!"
+                     message : "ok"
                    });
                }
             }else{
@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
                   });
                }else{
                   res.status(201).send({
-                     message : "ok!"
+                     message : "ok"
                    });
                }
             }

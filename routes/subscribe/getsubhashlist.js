@@ -24,7 +24,7 @@ router.get('/:pageIdx/:userIdx', async (req, res) => {
 			} else {
 				res.status(201).send({
 					message : "ok",
-					data : [{contents_list : viewResult}]
+					data : [{hashcontents_list : viewResult}]
 				});
 			}
 		}

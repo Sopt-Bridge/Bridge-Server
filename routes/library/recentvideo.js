@@ -20,8 +20,8 @@ router.get('/:userIdx', async (req, res) => {
 			});
 		} else {
 			res.status(200).send({
-				message : "Success",
-				data : [{recentView : selectRecentResult}]
+				message : "ok",
+				data : [{contents_list : selectRecentResult}]
 			});
 		}
 	}

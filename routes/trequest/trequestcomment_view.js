@@ -26,7 +26,7 @@ router.get('/:iboardIdx/:lastcontentsIdx', async (req, res) => {
 	} else {
 		res.status(201).send({
             message : "ok",
-            data : [{comment_list:getReviewList}]
+            data : [{request_comment_list:getReviewList}]
         });
 	}
 });

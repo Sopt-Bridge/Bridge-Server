@@ -26,7 +26,7 @@ router.get('/:icmtIdx/:lastcontentsIdx', async (req, res) => {
 	} else {
 		res.status(201).send({
             message : "ok",
-            data : [{recomment_list:getReviewList}]
+            data : [{request_recomment_list:getReviewList}]
         });
 	}
 });

@@ -50,7 +50,7 @@ ORDER BY Hashtag.hashCnt DESC Limit ?,20`;
             } else {
                 res.status(201).send({
                     message : "ok",
-                    data : [{contents_list : viewResult}]
+                    data : [{hashcontents_list : viewResult}]
                 });
             }
         }

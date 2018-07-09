@@ -24,7 +24,7 @@ router.get('/:userIdx', async (req, res) => {
 		} else {
 			res.status(200).send({
 				message : "ok",
-				data : [{contents_list : SelectGroupResult}]
+				data : [{group_list : SelectGroupResult}]
 			});
 		}
 	}

@@ -31,7 +31,7 @@ router.get('/:ccmtIdx/:lastcontentsIdx', async (req, res) => {
    } else {
       res.status(201).send({
             message : "ok",
-            data : [{recomment_list:getReviewList}]
+            data : [{contents_recomment_list:getReviewList}]
         });
    }
 }

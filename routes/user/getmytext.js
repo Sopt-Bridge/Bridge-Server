@@ -23,8 +23,8 @@ router.get('/:userIdx' , async (req , res) => {
                 });
             } else {
                 res.status(201).send({
-                    message : "OK",
-                    data : [{contents_list : viewResult}]
+                    message : "ok",
+                    data : [{request_list : viewResult}]
                 });
             }
     }

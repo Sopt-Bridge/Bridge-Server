@@ -85,7 +85,7 @@ router.post('/', async (req, res) => {
 					} else {
 						res.status(201).send({
 							message : "ok",
-							data : [{videoContents : selectVideoResult}]
+							data : [{contents_list : selectVideoResult}]
 						});
 					}
 			}
