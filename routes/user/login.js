@@ -3,6 +3,7 @@ const router = express.Router();
 const moment = require('moment');
 const async = require('async');
 
+const jwt = require('../../module/jwt.js');
 const db = require('../../module/pool.js');
 
 router.post('/', async(req, res) => {
@@ -10,15 +11,15 @@ router.post('/', async(req, res) => {
    let signupTime = moment().format('YYYY-MM-DD HH:mm:ss');
    let recentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-
-   if(!userUuid){
-      res.status(400).send({
-         message : "Null Value"
-      });
-   } else {
-
+   	  if(!userUuid){
+   	  	res.status(400).send({
+   	  		message : "Invalid Uuid"
+   	  	});
+   	  } else {
       let checkQuery = 'SELECT userUuid FROM User WHERE userUuid = ?';
       let checkResult = await db.queryParam_Arr(checkQuery,[userUuid]);
+
+      let token = jwt.sign(userUuid);
 
       if(checkResult.length === 0){//첫 로그인
          let InsertUserQuery = 'INSERT INTO User (userUuid, recentTime, signupTime) Values (?, ?, ?)';
@@ -29,9 +30,21 @@ router.post('/', async(req, res) => {
                message : "Failed Insert From Server"
             });
          } else {
-            res.status(201).send({
-               message : "ok"
-            });
+         	let getUserIdxQuery = 'SELECT userIdx FROM User WHERE userUuid = ?';
+         	let getUserIdxResult = await db.queryParam_Arr(getUserIdxQuery, [userUuid]);
+
+         	if(!getUserIdxResult) {
+         		res.status(500).send({
+         			message : "error"
+         		});
+         	} else {
+         		res.status(201).send({
+         			message : "success",
+         			data : [{userIdx : getUserIdxResult}],
+         			token : token
+         		});
+         	}
+          
          }
       } 
       else if(checkResult.length ===1){// 이후 로그인
@@ -53,7 +66,8 @@ router.post('/', async(req, res) => {
          }else{
             res.status(201).send({
                message : "Updated",
-               data : [{userIdx : SelectUserIdxResult}]
+               data : [{userIdx : SelectUserIdxResult}],
+               token : token
          });
          }
          }

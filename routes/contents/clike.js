@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
                let mQuery = 'UPDATE Contents SET contentsLike=1 WHERE contentsIdx=? and userIdx=?';
                let mResult =  await db.queryParam_Arr(mQuery,[contentsIdx, userIdx]);
                 res.status(201).send({
-                  message : "ok!"
+                  message : "ok"
                });
             }else{
                let mQuery = 'UPDATE Contents SET contentsLike=0 WHERE contentsIdx=? and userIdx=?';

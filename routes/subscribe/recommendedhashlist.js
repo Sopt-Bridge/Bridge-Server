@@ -4,15 +4,19 @@ const crypto = require('crypto-promise');
 const db = require('../../module/pool.js');
 const moment = require('moment');
 
-router.get('/:lastcontentsIdx/:userIdx', async (req, res) => {
-		 let lastcontentsIdx = req.params.lastcontentsIdx;
-   		 let userIdx = req.params.userIdx;
-         let maxindex = Number.MAX_VALUE;
-
-         if(lastcontentsIdx == 0){
-             lastcontentsIdx = maxindex+1;
-         }
-		    let viewQuery = `SELECT DISTINCT
+router.get('/:pageIdx/:userIdx', async (req, res) => {
+         let pageIdx = req.params.pageIdx;
+         let userIdx = req.params.userIdx;
+        
+        if(!pageIdx||!userIdx){
+            res.status(400).send({
+                message:"Null Value"
+            });
+        }else{
+            pageIdx = pageIdx*20;
+            let viewQuery = `SELECT DISTINCT
+        
+        
     Hashtag.hashName,
     Hashtag.hashImg,
     Hashtag.hashCnt,
@@ -35,22 +39,22 @@ FROM
 WHERE
     S.subflag = 1
         AND S.hashName = Hashtag.hashName
-        AND Hashtag.hashIdx<?
-ORDER BY Hashtag.hashCnt DESC`;
+ORDER BY Hashtag.hashCnt DESC Limit ?,20`;
 
-			let viewResult = await db.queryParam_Arr(viewQuery,[userIdx, lastcontentsIdx]);
+            let viewResult = await db.queryParam_Arr(viewQuery,[userIdx, pageIdx]);
 
-			if (!viewResult) {
-				res.status(500).send({
-					message : "Fail at Server"
-				});
-			} else {
-				res.status(201).send({
-					message : "ok",
-					data : [{contents_list : viewResult}]
-				});
-			}
-		
+            if (!viewResult) {
+                res.status(500).send({
+                    message : "Fail at Server"
+                });
+            } else {
+                res.status(201).send({
+                    message : "ok",
+                    data : [{contents_list : viewResult}]
+                });
+            }
+        }
+        
 });
 
 module.exports = router;

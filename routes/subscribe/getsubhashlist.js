@@ -4,22 +4,18 @@ const crypto = require('crypto-promise');
 const db = require('../../module/pool.js');
 const moment = require('moment');
 
-router.get('/:lastcontentsIdx/:userIdx', async (req, res) => {
-		 let lastcontentsIdx = req.params.lastcontentsIdx;
+router.get('/:pageIdx/:userIdx', async (req, res) => {
+		 let pageIdx = req.params.pageIdx;
    		let userIdx = req.params.userIdx;
-         let maxindex = Number.MAX_VALUE;
 
-         if(!lastcontentsIdx || !userIdx){
+         if(!pageIdx || !userIdx){
          	res.status(400).send({
          		message : "null Value"
          	});
          } else {
-
-         if(lastcontentsIdx == 0){
-             lastcontentsIdx = maxindex+1;
-         }
-		    let viewQuery = 'SELECT Hashtag.hashName, Hashtag.hashCnt, Hashtag.hashImg From Hashtag,Subscribe WHERE Subscribe.userIdx=? and Subscribe.hashName=Hashtag.hashName and subIdx<? limit 10'
-			let viewResult = await db.queryParam_Arr(viewQuery, [userIdx, lastcontentsIdx]);
+         	pageIdx = pageIdx*20;
+		    let viewQuery = 'SELECT Hashtag.hashName, Hashtag.hashCnt, Hashtag.hashImg From Hashtag,Subscribe WHERE Subscribe.userIdx=? and Subscribe.hashName=Hashtag.hashName limit ?,10'
+			let viewResult = await db.queryParam_Arr(viewQuery, [userIdx, parseInt(pageIdx, 10)]);
 
 			if (!viewResult) {
 				res.status(500).send({

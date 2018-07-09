@@ -1,18 +1,30 @@
 const express = require('express');
 const router = express.Router();
 
+const jwt = require('../../module/jwt.js');
 const db = require('../../module/pool.js');
 
 router.post('/', async (req, res) => {
-	let userUuid = req.body.userUuid;
-	let selectQuery = `SELECT userUuid FROM User WHERE userUuid = ?`
-	let selectResult = await db.queryParam_Arr(selectQuery, [userUuid]);
+	let token = req.body.token;
 
-	if(!selectResult) {
+	if(!token){
 		res.status(400).send({
-			message : "null Value"
+			message : "null token"
 		});
 	} else {
+		let userUuid = jwt.verify(token).userUuid;
+		if(!userUuid) {
+		res.status(400).send({
+			message : "Invalied Value"
+		});
+	} else {
+		let selectQuery = `SELECT userUuid FROM User WHERE userUuid = ?`
+		let selectResult = await db.queryParam_Arr(selectQuery, [userUuid]);
+		if(!selectResult){
+			res.status(500).send({
+				message : "Server error"
+			});
+		} else {
 		let selectIdxQuery = `SELECT userIdx FROM User WHERE userUuid = ?`
 		let selectIdxResult = await db.queryParam_Arr(selectIdxQuery, [userUuid]);
 
@@ -35,6 +47,8 @@ router.post('/', async (req, res) => {
 			}
 		}
 	}
+	}
+}
 });
 
 
