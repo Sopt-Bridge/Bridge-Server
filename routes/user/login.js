@@ -8,6 +8,8 @@ const db = require('../../module/pool.js');
 
 router.post('/', async(req, res) => {
    let userUuid = req.body.userUuid;
+   let userName = req.body.userName;
+   let userType = req.body.userType;
    let signupTime = moment().format('YYYY-MM-DD HH:mm:ss');
    let recentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 

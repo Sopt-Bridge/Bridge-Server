@@ -3,59 +3,36 @@ const router = express.Router();
 const crypto = require('crypto-promise');  
 const db = require('../../module/pool.js');
 
-router.post('/', async (req, res) => {
+router.get('/:contentsIdx/:lastcontentsIdx', async (req, res) => {
 
-   let contentsIdx = req.body.contentsIdx;
-   let userIdx = req.body.userIdx;
-   if(!contentsIdx||!userIdx){
+   let lastcontentsIdx = req.params.lastcontentsIdx;
+    let contentsIdx = req.params.contentsIdx;
+   
+    let maxindex = Number.MAX_VALUE;
+    if (!contentsIdx||!lastcontentsIdx) {
       res.status(400).send({
          message : "Null Value"
       });
+   }else{
+    if(lastcontentsIdx == 0){
+       lastcontentsIdx = maxindex+1;
+    }
+    // 대댓글 수 , 
+   let getReviewListQuery = `SELECT C.CcmtDate, C.CcmtContent, C.CcmtIdx, C.userIdx, 
+   (SELECT count(CrecmtIdx) FROM Crecomment WHERE CcmtIdx = C.CcmtIdx) as recommentCnt
+    FROM Ccomment as C WHERE contentsIdx=? and contentsIdx < ? ORDER BY CcmtDate DESC limit 50 `;
+   let getReviewList = await db.queryParam_Arr(getReviewListQuery, [contentsIdx, lastcontentsIdx]);
+   if (!getReviewList) {
+      res.status(500).send({
+         message : "server error"
+      });
    } else {
-      let likenum = 'SELECT likeFlag FROM Bridge.Like WHERE contentsIdx=? and userIdx=?';
-      let likeResult = await db.queryParam_Arr(likenum, [contentsIdx, userIdx]);
-
-         if(!likeResult) {
-            res.status(500).send({
-               message : "Server error"
-            });
-         } else {
-            if(likeResult[0].likeFlag===0){
-               let mQuery = 'UPDATE Contents SET contentsLike=contentsLike+1 WHERE contentsIdx=?';
-               let mResult = await db.queryParam_Arr(mQuery,[contentsIdx]);
-
-               let lQuery = 'UPDATE Bridge.Like SET likeFlag=1 WHERE contentsIdx=? and userIdx=?';
-               let lResult = await db.queryParam_Arr(lQuery, [contentsIdx, userIdx]);
-               
-               if(!mResult||!lResult){
-                  res.status(500).send({
-                     message:"server error"
-                  });
-               }else{
-                  res.status(201).send({
-                     message : "ok"
-                   });
-               }
-            }else{
-               let mQuery = 'UPDATE Contents SET contentsLike=contentsLike-1 WHERE contentsIdx=?';
-               let mResult =  await db.queryParam_Arr(mQuery,[contentsIdx]);
-                
-               let lQuery = 'UPDATE Bridge.Like SET likeFlag=0 WHERE contentsIdx=? and userIdx=?';
-               let lResult = await db.queryParam_Arr(lQuery, [contentsIdx, userIdx]);
-               
-               if(!mResult||!lResult){
-                  res.status(500).send({
-                     message:"server error"
-                  });
-               }else{
-                  res.status(201).send({
-                     message : "ok"
-                   });
-               }
-            }
-            
-         }
-      }
+      res.status(201).send({
+            message : "ok",
+            data : [{comments_list:getReviewList}]
+        });
+   }
+}
 });
 
 module.exports = router;
