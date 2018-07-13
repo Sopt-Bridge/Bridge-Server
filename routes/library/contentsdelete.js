@@ -7,7 +7,7 @@ router.post('/', async (req, res) => {
 
 	let groupIdx = req.body.groupIdx;
 	let contentsIdx = req.body.contentsIdx;
-	if (!groupIdx||!contentsIdx) {
+	if ((groupIdx==null)||(contentsIdx==null)) {
 		res.status(400).send({
 			message : "Null Value"
 		});
