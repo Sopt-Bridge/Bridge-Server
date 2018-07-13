@@ -13,7 +13,7 @@ router.post('/', async(req, res) => {
    let signupTime = moment().format('YYYY-MM-DD HH:mm:ss');
    let recentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-   	  if(!userUuid || !userName || !userType){
+   	  if(!userUuid || !userName || (userType==null)){
    	  	res.status(400).send({
    	  		message : "Invalid Uuid"
    	  	});
