@@ -16,7 +16,6 @@ router.post('/', async (req, res) => {
 	} else {
 		let groupCheckQuery = 'SELECT groupIdx FROM Bridge.group WHERE groupIdx = ?'
 		let groupCheckResult = await db.queryParam_Arr(groupCheckQuery,[groupIdx]);
-
 		if(!groupCheckResult){
 			res.status(400).send({
 				message : "null Value"
@@ -24,7 +23,6 @@ router.post('/', async (req, res) => {
 		} else {
 			let groupTitle = req.body.groupTitle;
 			let groupColor = req.body.groupColor;
-
 			let updateQuery = `UPDATE Bridge.group SET groupTitle = ?, groupColor =? WHERE groupIdx = ?`
 			let updateResult = await db.queryParam_Arr(updateQuery, [groupTitle, groupColor, groupIdx]);
 

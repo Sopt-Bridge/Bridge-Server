@@ -6,8 +6,8 @@ const moment = require('moment');
 router.post('/', async (req, res) => {
 	let userIdx = req.body.userIdx;
 	let groupIdx = req.body.groupIdx;
-
-	if (!groupIdx || !userIdx) {
+	
+	if ((groupIdx==null) || (userIdx==null)) {
 		res.status(400).send({
 			message : "Null Value"
 		});
