@@ -4,16 +4,16 @@ const db = require('../../module/pool.js');
 const moment = require('moment');
 
 router.post('/', async (req, res) => {
-
+	let userIdx = req.body.userIdx;
 	let groupIdx = req.body.groupIdx;
 
-	if (!groupIdx) {
+	if (!groupIdx || !userIdx) {
 		res.status(400).send({
 			message : "Null Value"
 		});
 	} else {
-		 let deleteQuery = 'DELETE FROM Bridge.group WHERE groupIdx=?'
-	     let deleteResult = await db.queryParam_Arr(deleteQuery,[groupIdx]);
+		 let deleteQuery = 'DELETE FROM Bridge.group WHERE groupIdx=? and userIdx = ?'
+	     let deleteResult = await db.queryParam_Arr(deleteQuery,[groupIdx, userIdx]);
 
 			if (!deleteResult) {
 				res.status(500).send({

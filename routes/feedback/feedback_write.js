@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
 	let userIdx = req.body.userIdx;
 	let fboardContent = req.body.fboardContent;
 	let contentsIdx = req.body.contentsIdx; 
-
+	console.log(fboardContent);
 	if (!userIdx) {
 		res.status(400).send({
 			message : "Null Value"

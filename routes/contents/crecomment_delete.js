@@ -5,16 +5,16 @@ const db = require('../../module/pool.js');
 const moment = require('moment');
 
 router.post('/', async (req, res) => {
-
+	let userIdx = req.body.userIdx;
 	let crecmtIdx = req.body.crecmtIdx;
 
-	if (!crecmtIdx) {
+	if (!crecmtIdx || !userIdx) {
 		res.status(400).send({
 			message : "Null Value"
 		});
 	} else {
-		    let deleteQuery = 'DELETE FROM Crecomment WHERE crecmtIdx=?'
-			let deleteResult = await db.queryParam_Arr(deleteQuery,[crecmtIdx]);
+		    let deleteQuery = 'DELETE FROM Crecomment WHERE crecmtIdx=? and userIdx=?'
+			let deleteResult = await db.queryParam_Arr(deleteQuery,[crecmtIdx, userIdx]);
 
 			if (!deleteResult) {
 				res.status(500).send({

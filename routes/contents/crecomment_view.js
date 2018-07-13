@@ -19,19 +19,19 @@ router.get('/:ccmtIdx/:lastcontentsIdx', async (req, res) => {
     
     // 대댓글 수 , 유저, 작성시간, 내용
    
-   let getReviewListQuery = `SELECT crecmtDate, crecmtContent, userIdx, 
-   (SELECT count(crecmtIdx) FROM Crecomment WHERE ccmtIdx =?) as recommentCnt 
+   let getReviewListQuery = `SELECT crecmtDate, crecmtContent, userIdx, crecmtIdx,
+   (SELECT userName FROM User WHERE userIdx = Crecomment.userIdx) as userName,
+   (SELECT count(crecmtIdx) FROM Crecomment WHERE ccmtIdx = ?) as recommentCnt 
    FROM Crecomment WHERE ccmtIdx=? and crecmtIdx < ? ORDER BY CrecmtDate DESC limit 50 `;
    let getReviewList = await db.queryParam_Arr(getReviewListQuery, [ccmtIdx, ccmtIdx, lastcontentsIdx]);
-
-   if (!getReviewList) {
+      if (!getReviewList) {
       res.status(500).send({
          message : "server error"
       });
    } else {
       res.status(201).send({
             message : "ok",
-            data : [{contents_recomment_list:getReviewList}]
+            data : [{recomment_list:getReviewList}]
         });
    }
 }

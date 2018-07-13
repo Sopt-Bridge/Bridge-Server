@@ -18,9 +18,10 @@ router.get('/:contentsIdx/:lastcontentsIdx', async (req, res) => {
        lastcontentsIdx = maxindex+1;
     }
     // 대댓글 수 , 
-   let getReviewListQuery = `SELECT C.CcmtDate, C.CcmtContent, C.CcmtIdx, C.userIdx, 
-   (SELECT count(CrecmtIdx) FROM Crecomment WHERE CcmtIdx = C.CcmtIdx) as recommentCnt
-    FROM Ccomment as C WHERE contentsIdx=? and contentsIdx < ? ORDER BY CcmtDate DESC limit 50 `;
+   let getReviewListQuery = `SELECT C.ccmtDate, C.ccmtContent, C.ccmtIdx, C.userIdx, 
+   (SELECT userName FROM User WHERE userIdx = C.userIdx) as userName,
+   (SELECT count(crecmtIdx) FROM Crecomment WHERE ccmtIdx = C.ccmtIdx) as recommentCnt
+    FROM Ccomment as C WHERE contentsIdx=? and contentsIdx < ? ORDER BY ccmtDate DESC limit 50 `;
    let getReviewList = await db.queryParam_Arr(getReviewListQuery, [contentsIdx, lastcontentsIdx]);
    if (!getReviewList) {
       res.status(500).send({

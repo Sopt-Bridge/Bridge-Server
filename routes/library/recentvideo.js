@@ -11,7 +11,7 @@ router.get('/:userIdx', async (req, res) => {
 			message : "null Value"
 		});
 	} else {
-		let selectRecentQuery = `SELECT Recentview.contentsIdx, Contents.contentsUrl FROM Recentview, Contents WHERE Recentview.userIdx = ? and Recentview.contentsIdx = Contents.contentsIdx ORDER BY Recentview.rvIdx DESC`
+		let selectRecentQuery = `SELECT Recentview.contentsIdx, Contents.contentsUrl, Contents.contentsoriginUrl, Contents.thumbnailUrl, Contents.contentsInfo, Contents.contentsHit, Contents.contentsCategory, Contents.contentsDate, Contents.contentsLike, Contents.contentsType, (SELECT count(ccmtIdx) FROM Ccomment WHERE Contents.contentsIdx = Recentview.contentsIdx and Ccomment.contentsIdx = Contents.contentsIdx) as commentCnt FROM Recentview, Contents WHERE Recentview.userIdx = ? and Recentview.contentsIdx = Contents.contentsIdx ORDER BY Recentview.rvIdx DESC`
 		let selectRecentResult = await db.queryParam_Arr(selectRecentQuery,[userIdx]);
 
 		if(!selectRecentResult){

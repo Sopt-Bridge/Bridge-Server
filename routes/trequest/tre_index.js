@@ -12,5 +12,5 @@ router.use('/trequestcomment_view',require('./trequestcomment_view.js'));
 router.use('/trequestrecomment_delete',require('./trequestrecomment_delete.js'));
 router.use('/trequestrecomment_write',require('./trequestrecomment_write.js'));
 router.use('/trequestrecomment_view',require('./trequestrecomment_view.js'));
-
+router.use('/trequest_listpagination',require('./trequest_listpagination.js'));
 module.exports = router;

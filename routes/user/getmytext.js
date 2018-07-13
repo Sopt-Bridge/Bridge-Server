@@ -13,7 +13,7 @@ router.get('/:userIdx' , async (req , res) => {
             message : "NULL Value"
         });
     }else{
-            let viewQuery = `SELECT DISTINCT Interpretation.iboardTitle, 
+            let viewQuery = `SELECT DISTINCT Interpretation.iboardTitle, Interpretation.iboardIdx, Interpretation.iboardUrl, Interpretation.iboardContent, User.userName, User.userIdx,
             Interpretation.iboardDate FROM Interpretation,User WHERE User.userIdx = ?`;
             let viewResult = await db.queryParam_Arr(viewQuery, [userIdx]);
 

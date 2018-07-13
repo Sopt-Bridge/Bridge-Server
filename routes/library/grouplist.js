@@ -14,7 +14,7 @@ router.get('/:userIdx', async (req, res) => {
 			message : "Null Value"
 		});
 	}  else {
-		let SelectGroupQuery = `SELECT groupTitle, groupBgimage from Bridge.group WHERE userIdx = ? `
+		let SelectGroupQuery = `SELECT groupTitle, groupBgimage, groupIdx, groupColor from Bridge.group WHERE userIdx = ? ORDER BY groupIdx DESC `
 		let SelectGroupResult = await db.queryParam_Arr(SelectGroupQuery,[SelectLibResult[0].userIdx]);
 
 		if(!SelectGroupResult){

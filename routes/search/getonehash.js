@@ -4,17 +4,17 @@ const crypto = require('crypto-promise');
 const db = require('../../module/pool.js');
 const moment = require('moment');
 
-router.get('/:pageIdx/:userIdx', async (req, res) => {
-       let pageIdx = req.params.pageIdx;
-         let userIdx = req.params.userIdx;
+router.get('/:userIdx/:hashName', async (req, res) => {
+      let hashName = req.params.hashName;
+         let userIdx = req.params.userIdx;   
+         let name =  ['#'+req.params.hashName];
 
-         if(!pageIdx || !userIdx){
+         if(!hashName || !userIdx){
             res.status(400).send({
                message : "null Value"
             });
          } else {
-            pageIdx = pageIdx*20;
-          let viewQuery = `SELECT Hashtag.hashName, Hashtag.hashCnt, Hashtag.hashImg,
+          let viewQuery = `SELECT H.hashName, H.hashCnt, H.hashImg,
           CASE
         WHEN
             (SELECT 
@@ -23,13 +23,13 @@ router.get('/:pageIdx/:userIdx', async (req, res) => {
                     Subscribe as T
                 WHERE
                     T.userIdx = ?
-                        AND T.hashName = Hashtag.hashName) IS NULL
+                        AND T.hashName = H.hashName) IS NULL
         THEN
             0
         ELSE 1
     END AS subflagresult
-           From Hashtag,Subscribe WHERE Subscribe.userIdx=? and Subscribe.hashName=Hashtag.hashName limit ?,20`
-         let viewResult = await db.queryParam_Arr(viewQuery, [userIdx, userIdx, parseInt(pageIdx, 10)]);
+           From Hashtag as H WHERE  H.hashName = ?`
+         let viewResult = await db.queryParam_Arr(viewQuery, [userIdx, name]);
 
          if (!viewResult) {
             res.status(500).send({

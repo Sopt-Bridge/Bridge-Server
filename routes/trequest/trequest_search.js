@@ -14,9 +14,10 @@ router.get('/:searchname', async (req, res) => {
       });
    } else {
      
-      let searchQuery = 'SELECT iboardTitle,iboardDate, userIdx FROM Interpretation WHERE iboardTitle LIKE ?';      // 입력받은 s_idx DB에 존재하는지 확인
+      let searchQuery = 'SELECT I.iboardUrl,I.iboardIdx, I.iboardContent,I.iboardTitle,I.iboardDate, I.userIdx ,(SELECT userName FROM User WHERE userIdx = I.userIdx) as userName FROM Interpretation as I WHERE I.iboardTitle LIKE ?';      // 입력받은 s_idx DB에 존재하는지 확인
       let searchResult = await db.queryParam_Arr(searchQuery,[searchParams]);
-      
+      let searchCnt = searchResult.length;
+      console.log(searchCnt);
       
       if (!searchResult) {                                    // 정상적으로 query문이 수행되지 않았을 경우
          res.status(500).send({

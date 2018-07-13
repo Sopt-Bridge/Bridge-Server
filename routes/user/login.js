@@ -13,7 +13,7 @@ router.post('/', async(req, res) => {
    let signupTime = moment().format('YYYY-MM-DD HH:mm:ss');
    let recentTime = moment().format('YYYY-MM-DD HH:mm:ss');
 
-   	  if(!userUuid){
+   	  if(!userUuid || !userName || !userType){
    	  	res.status(400).send({
    	  		message : "Invalid Uuid"
    	  	});
@@ -24,8 +24,8 @@ router.post('/', async(req, res) => {
       let token = jwt.sign(userUuid);
 
       if(checkResult.length === 0){//첫 로그인
-         let InsertUserQuery = 'INSERT INTO User (userUuid, recentTime, signupTime) Values (?, ?, ?)';
-         let InsertUserResult = await db.queryParam_Arr(InsertUserQuery, [userUuid,recentTime,signupTime]);
+         let InsertUserQuery = 'INSERT INTO User (userUuid, userName, userType,recentTime, signupTime) Values (?, ?, ?, ?, ?)';
+         let InsertUserResult = await db.queryParam_Arr(InsertUserQuery, [userUuid,userName,userType,recentTime,signupTime]);
          
          if(!InsertUserResult){
             res.status(500).send({
@@ -42,8 +42,7 @@ router.post('/', async(req, res) => {
          	} else {
          		res.status(201).send({
          			message : "success",
-         			data : [{userIdx : getUserIdxResult}],
-         			token : token
+         			data : [{userIdx : getUserIdxResult[0].userIdx, token : token}]
          		});
          	}
           
@@ -58,18 +57,17 @@ router.post('/', async(req, res) => {
                message : "Failed Upated From Server"
             });
          } else {
-         let SelectUserIdxQuery = 'SELECT userIdx from User where userUuid = ?'
-         let SelectUserIdxResult = await db.queryParam_Arr(SelectUserIdxQuery, [userUuid]);
+         let selectUserIdxQuery = 'SELECT userIdx from User where userUuid = ?'
+         let selectUserIdxResult = await db.queryParam_Arr(SelectUserIdxQuery, [userUuid]);
 
-         if(!SelectUserIdxResult){
+         if(!selectUserIdxResult){
             res.status(500).send({
                message : "Failed Select userIdx From Server"
             });
          }else{
             res.status(201).send({
                message : "Updated",
-               data : [{userIdx : SelectUserIdxResult}],
-               token : token
+               data : [{userIdx : selectUserIdxResult[0].userIdx, token : token}]
          });
          }
          }

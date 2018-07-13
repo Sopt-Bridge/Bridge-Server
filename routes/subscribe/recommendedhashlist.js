@@ -5,8 +5,8 @@ const db = require('../../module/pool.js');
 const moment = require('moment');
 
 router.get('/:pageIdx/:userIdx', async (req, res) => {
-         let pageIdx = req.params.pageIdx;
-         let userIdx = req.params.userIdx;
+       let pageIdx = req.params.pageIdx;
+          let userIdx = req.params.userIdx;
         
         if(!pageIdx||!userIdx){
             res.status(400).send({
@@ -14,7 +14,7 @@ router.get('/:pageIdx/:userIdx', async (req, res) => {
             });
         }else{
             pageIdx = pageIdx*20;
-            let viewQuery = `SELECT DISTINCT
+          let viewQuery = `SELECT DISTINCT
         
         
     Hashtag.hashName,
@@ -28,33 +28,29 @@ router.get('/:pageIdx/:userIdx', async (req, res) => {
                     Subscribe as T
                 WHERE
                     T.userIdx = ?
-                        AND T.hashName = S.hashName) IS NULL
+                        AND T.hashName = Hashtag.hashName) IS NULL
         THEN
             0
         ELSE 1
     END AS subflagresult
 FROM
-    Hashtag,
-    Subscribe as S
-WHERE
-    S.subflag = 1
-        AND S.hashName = Hashtag.hashName
+    Hashtag
 ORDER BY Hashtag.hashCnt DESC Limit ?,20`;
 
-            let viewResult = await db.queryParam_Arr(viewQuery,[userIdx, pageIdx]);
+         let viewResult = await db.queryParam_Arr(viewQuery,[userIdx, pageIdx]);
 
-            if (!viewResult) {
-                res.status(500).send({
-                    message : "Fail at Server"
-                });
-            } else {
-                res.status(201).send({
-                    message : "ok",
-                    data : [{hashcontents_list : viewResult}]
-                });
-            }
+         if (!viewResult) {
+            res.status(500).send({
+               message : "Fail at Server"
+            });
+         } else {
+            res.status(201).send({
+               message : "ok",
+               data : [{hashcontents_list : viewResult}]
+            });
+         }
         }
-        
+      
 });
 
 module.exports = router;

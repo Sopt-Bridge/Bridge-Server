@@ -17,8 +17,9 @@ router.post('/', async (req, res) => {
    } else {
           let registerReviewQuery = 'INSERT INTO Crecomment (crecmtDate, crecmtContent, userIdx,ccmtIdx) VALUES (?,?,?,?)'
          let registerReview = await db.queryParam_Arr(registerReviewQuery, [currentTime,crecmtContent, userIdx, ccmtIdx]);
-         let numQuery = 'SELECT count(crecmtIdx) as countCrecmtIdx FROM Crecomment';
-         let numResult = await db.queryParam_Arr(numQuery);
+          let numQuery = 'SELECT crecmtIdx FROM Crecomment WHERE userIdx=? and crecmtContent = ? and ccmtIdx=?';
+         let numResult = await db.queryParam_Arr(numQuery, [userIdx, crecmtContent, ccmtIdx]);
+        
          
          if (!registerReview||!numResult) {
             res.status(500).send({
@@ -27,7 +28,7 @@ router.post('/', async (req, res) => {
          } else {
             res.status(201).send({
                message : "ok",
-               data : [{crecmtIdx:numResult[0].countCrecmtIdx}]
+               data : [{crecmtIdx:numResult[0].crecmtIdx}]
             });
          }
       }

@@ -6,7 +6,6 @@ const db = require('../../module/pool.js');
 router.post('/', async (req, res) => {
    let userIdx = req.body.userIdx;
    let groupTitle = req.body.groupTitle;
-   let groupBgimage = req.body.groupBgimage;
    let groupColor = req.body.groupColor;
 
    if(!userIdx){
@@ -14,17 +13,21 @@ router.post('/', async (req, res) => {
             message : "Null Value"
          });
    }else{
-   let insertGroupQuery = `INSERT INTO Bridge.group (userIdx, groupTitle, groupBgimage, groupColor) VALUES (?, ?, ?, ?)`
-   let insertGroupResult = await db.queryParam_Arr(insertGroupQuery, [userIdx, groupTitle, groupBgimage, groupColor]);
+   let insertGroupQuery = `INSERT INTO Bridge.group (userIdx, groupTitle, groupColor) VALUES (?, ?, ?)`
+   let insertGroupResult = await db.queryParam_Arr(insertGroupQuery, [userIdx, groupTitle, groupColor]);
 
-   if(!insertGroupResult){
+   let selectIdxQuery = `SELECT groupIdx from Bridge.group WHERE userIdx = ? ORDER BY groupDate DESC`
+   let selectIdxResult = await db.queryParam_Arr(selectIdxQuery, [userIdx]);
+
+   if(!insertGroupResult || !selectIdxResult){
       res.status(500).send({
       message : "Server error"
          });
       }
     else {
          res.status(201).send({
-            message : "ok"
+            message : "ok",
+            data : [{groupIdx : selectIdxResult[0].groupIdx }]
          });
       }
    }

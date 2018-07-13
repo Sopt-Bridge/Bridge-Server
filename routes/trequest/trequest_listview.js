@@ -8,7 +8,7 @@ router.get('/:lastcontentsIdx', async (req, res) => {
        let lastcontentsIdx = req.params.lastcontentsIdx;
    
          let maxindex = Number.MAX_VALUE;
-         if(!lastcontentsIdx){
+         if((lastcontentsIdx == null)){
             res.status(400).send({
                message:"null value"
             });
@@ -16,7 +16,7 @@ router.get('/:lastcontentsIdx', async (req, res) => {
          if(lastcontentsIdx == 0){
              lastcontentsIdx = maxindex+1;
          }
-          let viewQuery = 'SELECT iboardTitle, iboardDate, userIdx From Interpretation WHERE iboardIdx < ? ORDER BY iboardDate DESC limit 20'
+          let viewQuery = 'SELECT I.iboardIdx, I.iboardUrl, I.iboardContent,I.iboardTitle, I.iboardDate, I.userIdx, (SELECT userName FROM User WHERE userIdx = I.userIdx) as userName From Interpretation as I WHERE I.iboardIdx < ? ORDER BY I.iboardDate DESC limit 20'
          let viewResult = await db.queryParam_Arr(viewQuery, [lastcontentsIdx]);
 
          if (!viewResult) {

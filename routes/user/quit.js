@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 				});
 			} else {
 				res.status(201).send({
-					message : "success"
+					message : "ok"
 				});
 			}
 		}
