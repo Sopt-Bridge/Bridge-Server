@@ -14,7 +14,7 @@ router.get('/:userIdx' , async (req , res) => {
         });
     }else{
             let viewQuery = `SELECT DISTINCT Interpretation.iboardTitle, Interpretation.iboardIdx, Interpretation.iboardUrl, Interpretation.iboardContent, User.userName, User.userIdx,
-            Interpretation.iboardDate FROM Interpretation,User WHERE User.userIdx = ?`;
+            Interpretation.iboardDate FROM Interpretation,User WHERE User.userIdx = ? and User.userIdx=Interpretation.userIdx`;
             let viewResult = await db.queryParam_Arr(viewQuery, [userIdx]);
 
             if(!viewResult){

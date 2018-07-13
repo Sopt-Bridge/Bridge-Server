@@ -5,15 +5,15 @@ const moment = require('moment');
 
 router.post('/', async (req, res) => {
 
-	let groupIdx = req.body.groupIdx;
+	let userIdx = req.body.userIdx;
 	let contentsIdx = req.body.contentsIdx;
-	if ((groupIdx==null)||(contentsIdx==null)) {
+	if ((userIdx==null)||(contentsIdx==null)) {
 		res.status(400).send({
 			message : "Null Value"
 		});
 	} else {
-		 let deleteQuery = 'DELETE FROM GroupContent WHERE groupIdx=? and contentsIdx =?'
-	     let deleteResult = await db.queryParam_Arr(deleteQuery,[groupIdx, contentsIdx]);
+		 let deleteQuery = 'DELETE FROM GroupContent WHERE contentsIdx = (SELECT contentsIdx FROM Bridge.group WHERE Bridge.group.userIdx=? and contentsIdx =? and GroupContent.groupIdx = Bridge.group.groupIdx)'
+	     let deleteResult = await db.queryParam_Arr(deleteQuery,[userIdx, contentsIdx]);
 
 			if (!deleteResult) {
 				res.status(500).send({

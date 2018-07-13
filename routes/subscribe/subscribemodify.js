@@ -7,7 +7,6 @@ router.post('/', async (req, res) => {
 
    let userIdx = req.body.userIdx;
    let hashName = req.body.hashName;
-   console.log(userIdx+" "+hashName);
    if(!userIdx||!hashName){
       res.status(400).send({
          message : "Null Value"
@@ -15,13 +14,14 @@ router.post('/', async (req, res) => {
    } else {
       let flag = 'SELECT subFlag FROM Subscribe WHERE userIdx=? and hashName=?';
       let flagResult = await db.queryParam_Arr(flag, [userIdx, hashName]);
-      console.log(flagResult);
-         if(flagResult.length==0) {
+       if(flagResult.length==0) {
             let selectQuery = 'INSERT INTO Subscribe (hashName, userIdx, subFlag) VALUES (?,?,1)';
             let selectResult = await db.queryParam_Arr(selectQuery, [hashName, userIdx]);
 
             let updateQuery = 'UPDATE Hashtag SET hashCnt=hashCnt+1 WHERE hashName=?';
             let updateResult = await db.queryParam_Arr(updateQuery, [hashName]);
+
+
 
             if(!updateResult||!selectResult){
                res.status(500).send({
@@ -29,7 +29,8 @@ router.post('/', async (req, res) => {
                });
             }else{
                res.status(201).send({
-                  message : "ok"
+                  message : "ok",
+                  flag : "1"
                });
             }
 
@@ -39,19 +40,20 @@ router.post('/', async (req, res) => {
 
             let updateQuery = 'UPDATE Hashtag SET hashCnt=hashCnt-1 WHERE hashName=?';
             let updateResult = await db.queryParam_Arr(updateQuery, [hashName]);
+
+         
             if(!updateResult||!deleteResult){
                res.status(500).send({
                   message : "Server error"
                });
             }else{
                res.status(201).send({
-                  message : "ok"
+                  message : "ok",
+                  flag : "0"
                });
             }
          }
       }
 });
-
-//flag !!
 
 module.exports = router;

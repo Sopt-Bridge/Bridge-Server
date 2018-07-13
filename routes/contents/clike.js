@@ -22,65 +22,31 @@ router.post('/', async (req, res) => {
             if(likeResult==0){
                let insertQuery = 'INSERT INTO Bridge.Like (contentsIdx, userIdx, likeFlag) VALUES (?,?,1)';
                let insertResult = await db.queryParam_Arr(insertQuery, [contentsIdx, userIdx]);
-               if(!insertResult){
-                  res.status(500).send({
-                     message:"server error!!"
-                  });
-               }else{
-                let mQuery = 'UPDATE Contents SET contentsLike=contentsLike+1 WHERE contentsIdx=?';
-               let mResult = await db.queryParam_Arr(mQuery,[contentsIdx]);
-
-               let lQuery = 'UPDATE Bridge.Like SET likeFlag=1 WHERE contentsIdx=? and userIdx=?';
-               let lResult = await db.queryParam_Arr(lQuery, [contentsIdx, userIdx]);
-               
-               let flag= 'SELECT likeFlag FROM Bridge.Like WHERE contentsIdx =? and userIdx=?';
-               let flagResult = await db.queryParam_Arr(flag, [contentsIdx, userIdx]);
-                 
-                 if(!mResult||!lResult||!flagResult){
-                  res.status(500).send({
-                     message:"server error!!"
-                  });
-               }else{
-                  res.status(201).send({
-                     message : "ok",
-                     flag : "1"
-                   });
-               }
-            }
-            }
-           else if(likeResult[0].likeFlag===0){
+             
                let mQuery = 'UPDATE Contents SET contentsLike=contentsLike+1 WHERE contentsIdx=?';
                let mResult = await db.queryParam_Arr(mQuery,[contentsIdx]);
 
-               let lQuery = 'UPDATE Bridge.Like SET likeFlag=1 WHERE contentsIdx=? and userIdx=?';
-               let lResult = await db.queryParam_Arr(lQuery, [contentsIdx, userIdx]);
-               
-               let flag= 'SELECT likeFlag FROM Bridge.Like WHERE contentsIdx =? and userIdx=?';
-               let flagResult = await db.queryParam_Arr(flag, [contentsIdx, userIdx]);
-
-               if(!mResult||!lResult||!flagResult){
+               if(!insertResult||!mResult){
                   res.status(500).send({
                      message:"server error!!"
                   });
                }else{
-                  res.status(201).send({
-                     message : "ok",
-                     flag : "1"
-                   });
-               }
-            }else{
+               res.status(201).send({
+                  message : "ok",
+                  flag : "1"
+                });
+            }
+            }
+           else if(likeResult[0].likeFlag==1){
                let mQuery = 'UPDATE Contents SET contentsLike=contentsLike-1 WHERE contentsIdx=?';
                let mResult =  await db.queryParam_Arr(mQuery,[contentsIdx]);
                 
-               let lQuery = 'UPDATE Bridge.Like SET likeFlag=0 WHERE contentsIdx=? and userIdx=?';
+               let lQuery = 'DELETE FROM Bridge.Like WHERE contentsIdx=? and userIdx=?';
                let lResult = await db.queryParam_Arr(lQuery, [contentsIdx, userIdx]);
 
-               let flag= 'SELECT likeFlag FROM Bridge.Like WHERE contentsIdx =? and userIdx=?';
-               let flagResult = await db.queryParam_Arr(flag, [contentsIdx, userIdx]);
-
-               if(!mResult||!lResult||!flagResult){
+               if(!mResult||!lResult){
                   res.status(500).send({
-                     message:"server error"
+                     message:"server error!"
                   });
                }else{
                   res.status(201).send({

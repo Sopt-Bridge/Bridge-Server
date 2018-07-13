@@ -18,7 +18,8 @@ router.get('/:lastcontentsIdx/:userIdx/:groupIdx', async (req, res) => {
          }// 컨탠츠제목, 컨탠츠길이, 해시태그 , 컨텐츠인덱스 
          let contentsQuery = `SELECT Contents.contentsTitle, Contents.contentsRuntime, Contents.contentsIdx, 
          Contents.hashName1, Contents.hashName2, Contents.hashName3,
-         (SELECT groupTitle FROM Bridge.group WHERE groupIdx = ? and userIdx=?) as groupTitle, Contents.contentsInfo, Contents.contentsHit, Contents.contentsCategory,
+           (SELECT count(I.imIdx) FROM Imerge as I WHERE I.contentsIdx = Contents.contentsIdx) as imgCnt, 
+       (SELECT groupTitle FROM Bridge.group WHERE groupIdx = ? and userIdx=?) as groupTitle, Contents.contentsInfo, Contents.contentsHit, Contents.contentsCategory,
          Contents.contentsDate, Contents.contentsLike, Contents.contentsUrl, Contents.contentsoriginUrl, Contents.contentsType, 
          (SELECT count(ccmtIdx) FROM Ccomment WHERE Ccomment.contentsIdx = Contents.contentsIdx) as commentCnt
           FROM Contents, GroupContent 

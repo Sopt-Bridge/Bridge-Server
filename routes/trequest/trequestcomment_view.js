@@ -14,11 +14,12 @@ router.get('/:iboardIdx/:lastcontentsIdx', async (req, res) => {
     }
     // 대댓글 수 , 유저, 내용 시간
 	
-	let getReviewListQuery = `SELECT I.icmtDate, I.icmtContent, I.userIdx, I.icmtIdx, (SELECT userName FROM User WHERE userIdx = I.userIdx) as userName,
+	let getReviewListQuery = `SELECT I.icmtDate,I.icmtContent, I.userIdx, I.icmtIdx, (SELECT userName FROM User WHERE userIdx = I.userIdx) as userName,
 	(SELECT count(Irecomment.ircmtIdx) FROM Irecomment WHERE Irecomment.icmtIdx =I.icmtIdx) as recommentcnt 
 	FROM Icomment as I WHERE I.iboardIdx=? and I.icmtIdx < ? ORDER BY I.icmtDate DESC limit 50`;
 	let getReviewList = await db.queryParam_Arr(getReviewListQuery, [iboardIdx, lastcontentsIdx]);
-	let commentCnt = getReviewList.length;
+console.log(getReviewList);
+	
 
 	if (!getReviewList) {
 		res.status(500).send({
@@ -27,7 +28,7 @@ router.get('/:iboardIdx/:lastcontentsIdx', async (req, res) => {
 	} else {
 		res.status(201).send({
             message : "ok",
-            data : [{request_comment_list:getReviewList, commentCnt : commentCnt}]
+            data : [{request_comment_list:getReviewList}]
         });
 	}
 });

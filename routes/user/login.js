@@ -49,10 +49,10 @@ router.post('/', async(req, res) => {
          }
       } 
       else if(checkResult.length ===1){// 이후 로그인
-         let UpdateUserQuery = 'UPDATE User SET recentTime=? WHERE userUuid=?';
-         let UpdateUserResult = await db.queryParam_Arr(UpdateUserQuery, [recentTime,userUuid]);
+         let updateUserQuery = 'UPDATE User SET recentTime=? WHERE userUuid=?';
+         let updateUserResult = await db.queryParam_Arr(updateUserQuery, [recentTime,userUuid]);
          
-         if(!UpdateUserResult){
+         if(!updateUserResult){
             res.status(500).send({
                message : "Failed Upated From Server"
             });
