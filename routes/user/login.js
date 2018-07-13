@@ -58,7 +58,7 @@ router.post('/', async(req, res) => {
             });
          } else {
          let selectUserIdxQuery = 'SELECT userIdx from User where userUuid = ?'
-         let selectUserIdxResult = await db.queryParam_Arr(SelectUserIdxQuery, [userUuid]);
+         let selectUserIdxResult = await db.queryParam_Arr(selectUserIdxQuery, [userUuid]);
 
          if(!selectUserIdxResult){
             res.status(500).send({
